@@ -19,7 +19,14 @@ namespace NAIProject02_Perceptor
 
             //Introduction commands
             Console.WriteLine("Proszę wprowadzić stałą uczenia(int+): ");
-            int learningCons = Convert.ToInt32(Console.ReadLine());
+
+            double learningCons = 0;
+            {
+                double temp;
+
+                if (Double.TryParse(Console.ReadLine(), out temp))
+                    learningCons = temp;
+            }
 
             Console.WriteLine("Proszę wprowadzić ścieżkę do pliku treningowego: ");
             filePath = Console.ReadLine();

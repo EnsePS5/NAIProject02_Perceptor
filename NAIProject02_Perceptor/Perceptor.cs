@@ -6,25 +6,25 @@ namespace NAIProject02_Perceptor
     internal sealed class Perceptor
     {
         //Perceptron variables
-        static int consLearn;
+        static double consLearn;
         double perceptronTarget;
         List<double> perceptorValues = new List<double>();
         List<string> perceptorTypes = new List<string>();
 
         //Constructor
-        private Perceptor(int learningCons)
+        private Perceptor(double learningCons)
         {
             consLearn = learningCons;
             Random targetRandom = new Random();
 
-            perceptronTarget = targetRandom.NextDouble()*5;
+            perceptronTarget = targetRandom.NextDouble()*2;
 
         }
         //Singletone
         private static Perceptor _instance;
 
         //Singletone inicialization
-        public static Perceptor GetInstance(int learningCons)
+        public static Perceptor GetInstance(double learningCons)
         {
             if (_instance == null)
             _instance = new Perceptor(learningCons);
@@ -33,8 +33,21 @@ namespace NAIProject02_Perceptor
         }
 
         //Learning method
-        public void Learn(List<string> records)
+        public void Learn(List<string> data)
         {
+            List<string> records = new List<string>();
+            records.AddRange(data);
+
+            string correctType = string.Empty;
+
+            //Assigning all(2) available types
+            for (int i = 0; i < records.Count; i++)
+            {
+                correctType = correctTypeExtraction(records[i]);
+
+                if (!perceptorTypes.Contains(correctType))
+                    perceptorTypes.Add(correctType);
+            }
 
             while (records.Count != 0)
             {
@@ -42,16 +55,32 @@ namespace NAIProject02_Perceptor
                 int nextIndex = randomIndex.Next(records.Count);
 
                 List<double> values = valuesExtraction(records[nextIndex]);
-                string correctType = correctTypeExtraction(records[nextIndex]);
-
-                if (!perceptorTypes.Contains(correctType))
-                    perceptorTypes.Add(correctType);
-
+                correctType = correctTypeExtraction(records[nextIndex]);
 
                 //Chcecks if assigning is correct
-                if (this.Assign(values, correctType) == 0)
+                if (correctType == perceptorTypes[Assign(values,correctType)])
                 {
-                    //TODO Learn delta formula
+                    Console.Write("Vector ");
+
+                    foreach (double value in values)
+                    {
+                        Console.Write(value + " ");
+                    }
+
+                    Console.WriteLine("has been assigned correctly to " + correctType);
+                }
+                else
+                {
+                    Console.Write("Vector ");
+
+                    foreach (double value in values)
+                    {
+                        Console.Write(value + " ");
+                    }
+
+                    Console.WriteLine("has been assigned incorrectly. Perceptor values has been modified! ");
+
+                    //TODO learning
                 }
 
                 records.RemoveAt(nextIndex);
@@ -71,11 +100,23 @@ namespace NAIProject02_Perceptor
             {
                 sum += perceptorValues[i] * valuesFromRecord[i];
             }
-
             if (sum >= perceptronTarget)
-                return 0;
+            {
+                if (correctType == perceptorTypes[0])
+                    return 0;
+                else if (correctType == perceptorTypes[1])
+                    return 1;
+            }
+            else 
+            {
+                if (correctType == perceptorTypes[0])
+                    return 1;
+                else if (correctType == perceptorTypes[1])
+                    return 0;
+            }
 
-            return 1;
+            return -1;
+
         }
 
         //Sets perceptron's deminsion size
@@ -100,7 +141,10 @@ namespace NAIProject02_Perceptor
 
             for (int i = 0; i < recordValues.Length-1; i++)
             {
-                doubleValues.Add(Convert.ToDouble(recordValues[i]));
+                double temp;
+
+                if (Double.TryParse(recordValues[i], out temp))
+                    doubleValues.Add(temp);
             }
 
             return doubleValues;
@@ -110,7 +154,7 @@ namespace NAIProject02_Perceptor
         private static string correctTypeExtraction(string recordValue)
         {
             string[] typeRecord = recordValue.Split(',');
-            return typeRecord[typeRecord.Length];
+            return typeRecord[typeRecord.Length-1];
         }
     }
 }
