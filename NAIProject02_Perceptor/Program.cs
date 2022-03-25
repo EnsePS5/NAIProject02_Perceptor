@@ -10,7 +10,8 @@ namespace NAIProject02_Perceptor
         // C:\Users\citio\OneDrive\Pulpit\Programowanie_C#_Visual_Studio\APBD\NAIProject02_Perceptor\Data\tranigVal.csv
         // - Default Path for trainingFile
 
-        //
+        // C:\Users\citio\OneDrive\Pulpit\Programowanie_C#_Visual_Studio\APBD\NAIProject02_Perceptor\Data\testVal.csv
+        // - Default Path for testFile
         public static void Main(string[] args)
         {
             //Record list variable
@@ -29,9 +30,10 @@ namespace NAIProject02_Perceptor
             //Reading csv file and adding them into List 
             records = dataReader(filePath);
 
-            //Learning process in loop
+            //Learning process in loop, setting perceptor
             string anwser = string.Empty;
             Perceptor perceptor = Perceptor.GetInstance(learningCons);
+            perceptor.setVecSize(records);
 
             do
             {
@@ -64,6 +66,13 @@ namespace NAIProject02_Perceptor
 
                 Console.WriteLine("Zakończono przypisywanie. Czy chesz wprowadzić dodatkowy rekord? Y/N: ");
                 anwser = Console.ReadLine();
+
+                if (anwser != "Y") return;
+
+                Console.WriteLine("Proszę wprowadzić wektor: ");
+
+                records.Clear();
+                records.Add(Console.ReadLine());
 
             } while (anwser == "Y");
 
