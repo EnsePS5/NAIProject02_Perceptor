@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 
 namespace NAIProject02_Perceptor
@@ -22,10 +23,11 @@ namespace NAIProject02_Perceptor
 
             double learningCons = 0;
             {
-                double temp;
+                NumberFormatInfo provider = new NumberFormatInfo();
+                provider.NumberDecimalSeparator = ".";
+                provider.NumberGroupSeparator = ",";
 
-                if (Double.TryParse(Console.ReadLine(), out temp))
-                    learningCons = temp;
+                learningCons = Convert.ToDouble(Console.ReadLine(), provider);
             }
 
             Console.WriteLine("Proszę wprowadzić ścieżkę do pliku treningowego: ");
