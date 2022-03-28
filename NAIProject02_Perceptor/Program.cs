@@ -8,10 +8,10 @@ namespace NAIProject02_Perceptor
     public class Program
     {
         static string filePath;
-        // C:\Users\citio\OneDrive\Pulpit\Programowanie_C#_Visual_Studio\APBD\NAIProject02_Perceptor\Data\tranigVal.csv
+        // C:...\Programowanie_C#_Visual_Studio\APBD\NAIProject02_Perceptor\Data\tranigVal.csv
         // - Default Path for trainingFile
 
-        // C:\Users\citio\OneDrive\Pulpit\Programowanie_C#_Visual_Studio\APBD\NAIProject02_Perceptor\Data\testVal.csv
+        // C:...\Programowanie_C#_Visual_Studio\APBD\NAIProject02_Perceptor\Data\testVal.csv
         // - Default Path for testFile
         public static void Main(string[] args)
         {
